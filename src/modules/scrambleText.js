@@ -136,6 +136,7 @@ export function setScrambleText() {
 
     if (gallery) {
       gsap.set(gallery, { rotateX: 90 });
+      gsap.set(gallery, { display: "none" });
     }
 
     gsap.timeline({
@@ -147,6 +148,7 @@ export function setScrambleText() {
           setScrambleIn(els);
           setButtonsIn(btns);
           setBgIn(bg);
+          gsap.set(gallery, { display: "flex" });
           gsap.to(gallery, {
             rotateX: 0,
             duration: 1,
@@ -160,11 +162,15 @@ export function setScrambleText() {
             rotateX: -90,
             duration: 1,
             ease: "expo.out",
+            onComplete: () => {
+              gsap.set(gallery, { display: "none" });
+            }
           });
         },
         onEnterBack: () => {
           setScrambleIn(els);
           setButtonsIn(btns);
+          gsap.set(gallery, { display: "flex" });
           gsap.to(gallery, {
             rotateX: 0,
             duration: 1,
@@ -179,6 +185,9 @@ export function setScrambleText() {
             rotateX: 90,
             duration: 1,
             ease: "expo.out",
+            onComplete: () => {
+              gsap.set(gallery, { display: "none" });
+            },
           });
         },
       },

@@ -5,6 +5,8 @@ import { initArrowScroll } from "./modules/arrowScroll";
 import { setWorkScroll } from "./modules/workScroll";
 import { setNumbersFlip } from "./modules/numbersFlip";
 import { setAvailability } from "./modules/availability";
+import { scrambleButtons } from "./modules/scrambleButtons";
+import { setMenu } from "./modules/menu";
 
 document.addEventListener("DOMContentLoaded", () => {
   setGalleries();
@@ -14,4 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setWorkScroll();
   setNumbersFlip();
   setAvailability();
+  scrambleButtons();
+  setMenu();
 });
