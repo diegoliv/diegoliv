@@ -32,35 +32,44 @@ export function setMenu() {
         stagger: 0.1,
       },
       "<"
-    );
+  );
+  
+  function closeMenu() {
+    currentTriggerLabel = "Menu";
+    // Change the trigger label
+    gsap.to(trigger, {
+      duration: 0.5,
+      scrambleText: {
+        text: currentTriggerLabel,
+      },
+      ease: "expo.out",
+    });
+
+    tl.reverse();
+    menu.classList.remove("is-open");
+  }
+
+  function openMenu() {
+    console.log("Menu closed");
+    currentTriggerLabel = "Close";
+    // Change the trigger label
+    gsap.to(trigger, {
+      duration: 0.5,
+      scrambleText: {
+        text: currentTriggerLabel,
+      },
+      ease: "expo.out",
+    });
+
+    tl.play();
+    menu.classList.add("is-open");
+  }
 
   trigger.addEventListener("click", () => {
     if (menu.classList.contains("is-open")) {
-      currentTriggerLabel = "Menu";
-      // Change the trigger label
-      gsap.to(trigger, {
-        duration: 0.5,
-        scrambleText: {
-          text: currentTriggerLabel,
-        },
-        ease: "expo.out",
-      });
-
-      tl.reverse();
-      menu.classList.remove("is-open");
+      closeMenu();
     } else {
-      // Change the trigger label
-      currentTriggerLabel = "Close";
-      gsap.to(trigger, {
-        duration: 0.5,
-        scrambleText: {
-          text: currentTriggerLabel,
-        },
-        ease: "expo.out",
-      });
-
-      tl.play();
-      menu.classList.add("is-open");
+      openMenu();
     }
   });
 
@@ -71,6 +80,13 @@ export function setMenu() {
         text: currentTriggerLabel,
       },
       ease: "expo.out",
+    });
+  });
+
+  menuItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      console.log("Menu item clicked");
+      closeMenu();
     });
   });
 }
