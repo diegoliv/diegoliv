@@ -13,8 +13,6 @@ export function scrambleButtons() {
       originalText = text.textContent;
     }
 
-    console.log(button, text, icon);
-
     button.addEventListener("mouseover", () => {
       if (text) {
         gsap.to(text, {

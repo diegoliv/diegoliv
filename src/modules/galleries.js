@@ -21,15 +21,17 @@ export function setGalleries() {
     let isOpen = false;
     // Hide all images initially
     gsap.set(imgs, { opacity: 0 });
-    gsap.set(imgs[0], { opacity: 1 });
+    gsap.set(imgs[1], { opacity: 1 });
 
     // Build timeline with instant transitions and 1s delay between steps
     for (let i = 1; i <= imgs.length; i++) {
       const prev = (i - 1) % imgs.length;
       const next = i % imgs.length;
 
-      tl.set(imgs[prev], { opacity: 0 }, `+=1`) // wait 1s
-        .set(imgs[next], { opacity: 1 });
+      if (!imgs[prev].querySelector("video")) {
+        tl.set(imgs[prev], { opacity: 0 }, `+=1`) // wait 1s
+          .set(imgs[next], { opacity: 1 });
+      }
     }
 
     // Pause/resume on hover
@@ -46,6 +48,13 @@ export function setGalleries() {
     if (gallery) {
       gallery.addEventListener("click", () => {
         openGallery(gallery, () => {
+          gsap.set(imgs, { opacity: 0, zIndex: -1 });
+          gsap.set(imgs[0], { opacity: 1, zIndex: 1 });
+          if (imgs[0].querySelector("video")) {
+            const video = imgs[0].querySelector("video");
+            video.setAttribute("preload", "metadata");
+            video.play();
+          }
           isOpen = true;
           tl.pause();
           tl.progress(0);
@@ -57,10 +66,15 @@ export function setGalleries() {
       close.addEventListener("click", () => {
         closeGallery(gallery, () => {
           isOpen = false;
-          gsap.set(imgs, { opacity: 0 });
-          gsap.set(imgs[0], { opacity: 1 });     
+          gsap.set(imgs, { opacity: 0, zIndex: -1 });
+          gsap.set(imgs[1], { opacity: 1, zIndex: 1 });
           tl.progress(0);
           tl.play();
+          if (imgs[0].querySelector("video")) {
+            const video = imgs[0].querySelector("video");
+            video.pause();
+            video.currentTime = 0;
+          }
         });
       });
     }

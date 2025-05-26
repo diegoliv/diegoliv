@@ -31,35 +31,58 @@ export function setGallery(gallery) {
   const closeBtn = controls.querySelector(".project-gallery_close");
 
   let current = 0;
+  let previous = 0;
   const total = parsed.items.length;
   numbers.innerHTML = `${current + 1} / ${total}`;
-  prevBtn.addEventListener("click", () => {
-    current = (current - 1 + total) % total;
+
+  function goToSlide(index) {
+    current = index;
     numbers.innerHTML = `${current + 1} / ${total}`;
-    gsap.to(gallery.querySelectorAll(".project-gallery_item"), {
+    const currentItem = gallery.querySelectorAll(".project-gallery_item")[current];
+    const previousItem = gallery.querySelectorAll(".project-gallery_item")[previous];
+
+    gsap.to(previousItem, {
       duration: 0.5,
       opacity: 0,
+      zIndex: -1,
       ease: "expo.inOut",
     });
-    gsap.to(gallery.querySelectorAll(".project-gallery_item")[current], {
+    gsap.to(currentItem, {
       duration: 0.5,
       opacity: 1,
+      zIndex: 1,
       ease: "expo.inOut",
     });
+
+
+    if (currentItem.querySelector("video")) {
+      const video = currentItem.querySelector("video");
+      video.play();
+    }
+
+    if (previousItem.querySelector("video")) {
+      const video = previousItem.querySelector("video");
+      video.pause();
+      video.currentTime = 0;
+    }
+  }
+
+  if (gallery.querySelector("video")) {
+    const video = gallery.querySelector("video");
+    video.addEventListener("ended", () => {
+      goToSlide((current + 1) % total);
+    });
+  }
+
+  prevBtn.addEventListener("click", () => {
+    previous = current;
+    current = (current - 1 + total) % total;
+    goToSlide(current, previous);
   });
   nextBtn.addEventListener("click", () => {
+    previous = current;
     current = (current + 1) % total;
-    numbers.innerHTML = `${current + 1} / ${total}`;
-    gsap.to(gallery.querySelectorAll(".project-gallery_item"), {
-      duration: 0.5,
-      opacity: 0,
-      ease: "expo.inOut",
-    });
-    gsap.to(gallery.querySelectorAll(".project-gallery_item")[current], {
-      duration: 0.5,
-      opacity: 1,
-      ease: "expo.inOut",
-    });
+    goToSlide(current, previous);
   });
 
   closeBtn.addEventListener("click", () => {
