@@ -3,6 +3,20 @@ export function setWorkScroll() {
   const numbersEl = document.querySelector(".indicator_el.numbers");
   const numbersWrapper = document.querySelector(".projects-indicator_wrapper");
 
+  // Use GSAP match media to check if is desktop, if not, return early
+  const mm = gsap.matchMedia();
+  mm.add("(max-width: 991px)", () => {
+    return;
+  }
+  );
+  mm.add("(min-width: 992px)", () => {
+    initWorkScroll(workWrapper, numbersEl, numbersWrapper);
+  }
+  );
+}
+
+function initWorkScroll(workWrapper, numbersEl, numbersWrapper) {
+
   if (!workWrapper || !numbersEl || !numbersWrapper) {
     return;
   }

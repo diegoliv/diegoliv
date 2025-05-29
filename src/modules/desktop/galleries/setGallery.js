@@ -90,4 +90,5 @@ export function setGallery(gallery) {
     current = 0;
     numbers.innerHTML = `${current + 1} / ${total}`;
   });
+
 }

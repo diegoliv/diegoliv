@@ -50,7 +50,6 @@ export function setMenu() {
   }
 
   function openMenu() {
-    console.log("Menu closed");
     currentTriggerLabel = "Close";
     // Change the trigger label
     gsap.to(trigger, {
@@ -85,7 +84,6 @@ export function setMenu() {
 
   menuItems.forEach((item) => {
     item.addEventListener("click", () => {
-      console.log("Menu item clicked");
       closeMenu();
     });
   });

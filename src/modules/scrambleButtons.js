@@ -33,7 +33,7 @@ export function scrambleButtons() {
           duration: 0,
           opacity: 1,
           stagger: {
-            each: 0.05,
+            each: 0.02,
             from: "random",
           },
         });
